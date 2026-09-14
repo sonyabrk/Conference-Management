@@ -49,7 +49,7 @@ pip install -r requirements.txt
 python main.py
 
 ## Запуск тестов
-pytest
+python -m pytest
 
 ## Проверка качества кода
 flake8
