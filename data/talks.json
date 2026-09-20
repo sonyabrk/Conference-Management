@@ -4,13 +4,15 @@
     "section_id": 1,
     "author": "Иванов И.И.",
     "title": "Асинхронность в Python",
-    "time_slot": "10:00"
+    "time_slot": "10:00",
+    "is_cancelled": false
   },
   {
     "id": 2,
     "section_id": 2,
     "author": "Петров П.П.",
     "title": "Современный React",
-    "time_slot": "11:30"
+    "time_slot": "11:30",
+    "is_cancelled": false
   }
 ]

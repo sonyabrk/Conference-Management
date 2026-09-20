@@ -1,12 +1,4 @@
-{
-  "1": {
-    "name": "Backend-разработка",
-    "conference_id": 1,
-    "capacity": 5
-  },
-  "2": {
-    "name": "Frontend-разработка",
-    "conference_id": 1,
-    "capacity": 3
-  }
-}
+[
+  {"id": 1, "name": "Backend-разработка", "conference_id": 1, "capacity": 5},
+  {"id": 2, "name": "Frontend-разработка", "conference_id": 1, "capacity": 3}
+]
