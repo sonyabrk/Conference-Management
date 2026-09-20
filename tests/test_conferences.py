@@ -1,58 +1,48 @@
-"""Тесты функций работы с конференциями и секциями."""
+"""Тесты класса Conference и функций работы с конференциями."""
 
-from conferences import (
-    add_conference,
-    add_section,
-    check_section_capacity,
-    filter_sections_by_capacity,
-    find_section,
-    sort_sections,
-)
+from models import Conference
+from models.conferences import add_conference, find_conference, find_conference_by_id
+
+
+def test_conference_creation():
+    conference = Conference(1, "PyCon 2026")
+    assert conference.id == 1
+    assert conference.name == "PyCon 2026"
+
+
+def test_conference_str():
+    assert "PyCon 2026" in str(Conference(1, "PyCon 2026"))
+
+
+def test_conference_from_data():
+    conference = Conference.from_data({"id": 2, "name": "DevConf"})
+    assert conference.id == 2
+    assert conference.name == "DevConf"
+
+
+def test_conference_to_dict():
+    assert Conference(1, "PyCon").to_dict() == {"id": 1, "name": "PyCon"}
 
 
 def test_add_conference():
-    conferences = {}
-    conf_id = add_conference(conferences, "PyCon 2026")
-    assert len(conferences) == 1
-    assert conferences[conf_id]["name"] == "PyCon 2026"
+    conferences = []
+    first = add_conference(conferences, "PyCon 2026")
+    second = add_conference(conferences, "DevConf")
+    assert conferences == [first, second]
+    assert (first.id, second.id) == (1, 2)
 
 
-def test_add_section():
-    sections = {}
-    section_id = add_section(sections, "Backend-разработка", 1, 5)
-    assert len(sections) == 1
-    assert sections[section_id]["capacity"] == 5
-
-
-def test_find_section():
-    sections = {}
-    add_section(sections, "Backend-разработка", 1, 5)
-    found = find_section(sections, "backend")
+def test_find_conference_ignores_case():
+    conferences = []
+    add_conference(conferences, "PyCon 2026")
+    add_conference(conferences, "DevConf")
+    found = find_conference(conferences, "pycon")
     assert len(found) == 1
+    assert found[0].name == "PyCon 2026"
 
 
-def test_check_section_capacity():
-    sections = {}
-    talks = []
-    section_id = add_section(sections, "Frontend", 1, 3)
-    free = check_section_capacity(sections, talks, section_id)
-    assert free == 3
-
-
-def test_sort_sections():
-    sections = {}
-    add_section(sections, "Small Room", 1, 3)
-    add_section(sections, "Big Hall", 1, 10)
-    sorted_list = sort_sections(sections)
-    assert sorted_list[0][1]["capacity"] == 10
-    assert sorted_list[1][1]["capacity"] == 3
-
-
-def test_filter_sections_by_capacity():
-    sections = {}
-    talks = []
-    add_section(sections, "Small Room", 1, 2)
-    add_section(sections, "Big Hall", 1, 10)
-    result = dict(filter_sections_by_capacity(sections, talks, 5))
-    assert len(result) == 1
-    assert "Big Hall" in [data["name"] for data in result.values()]
+def test_find_conference_by_id():
+    conferences = []
+    conference = add_conference(conferences, "PyCon 2026")
+    assert find_conference_by_id(conferences, conference.id) is conference
+    assert find_conference_by_id(conferences, 99) is None
